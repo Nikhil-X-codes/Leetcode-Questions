@@ -1,36 +1,17 @@
 class Solution {
 public:
     vector<int> twoSum(vector<int>& nums, int target) {
+        map<int, int> mp;  // Create a map to store number and its index
 
-vector<int> result;
-        int n=nums.size();
-        for(int i=0;i<n;i++){
-            for(int j=i+1;j<n;j++){
-                if(nums[i] + nums[j] == target ){
-  result.push_back(i);
-                result.push_back(j);
-                }
+        for (int i = 0; i < nums.size(); i++) {
+            int complement = target - nums[i];  // Find the complement of the current number
+
+            if (mp.find(complement) != mp.end()) {  // Check if the complement exists in the map
+                return vector<int>{mp[complement], i};  // If found, return the indices
             }
-        }
 
-// vector<int> result;
-// sort(nums.begin(), nums.end());
-// int left = 0;
-// int right = nums.size() - 1;
-// int n = nums.size();
-// while (left < right) {
-//     int sum = nums[left] + nums[right];
-//     if (sum == target) {
-//         result.push_back(left);
-//         result.push_back(right);
-//         break;
-//     } else if (sum < target) {
-//         left++;
-//     } else {
-//         right--; // Corrected this line to decrement right
-//     }
-// }
-
-return result;
-    }
+            mp[nums[i]] = i;}  // Store the current number and its index in the map
+return vector<int>{};    }
 };
+
+
