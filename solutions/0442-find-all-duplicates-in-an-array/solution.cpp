@@ -1,23 +1,22 @@
 class Solution {
 public:
     vector<int> findDuplicates(vector<int>& nums) {
-  int n=nums.size();
-
-vector<int>res;
-
-  for(int i=0;i<n;i++){
-int num=abs(nums[i]);
-
-int index=num-1;
-
-if(nums[index] < 0){
-res.push_back(num);
-}
-
-else{
-nums[index]*=-1;
-}
-  }      
+        int n = nums.size();
         
- return res;   }
+        vector<int> count(n + 1, 0); // Adjust count size to handle potential values from 1 to n
+        vector<int> duplicates;
+
+        for (int num : nums) {
+            count[num]++;
+        }
+
+        for (int i = 1; i <= n; i++) {
+            if (count[i] > 1) {
+                duplicates.push_back(i);
+            }
+        }
+
+        return duplicates;
+    }
 };
+
