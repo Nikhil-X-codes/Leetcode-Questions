@@ -1,31 +1,26 @@
-#include <unordered_set>
-#include <cmath>
-
 class Solution {
 public:
     bool isHappy(int n) {
-        std::unordered_set<int> seen;
+        
+       unordered_set<int>s;
 
-        while (true) {
-            int sum = 0;
+       while(n !=1 and s.find(n) == s.end()){
 
-            while (n != 0) {
-                int digit = n % 10;
-                sum += digit * digit;
-                n /= 10;
-            }
+        s.insert(n);
+        int sum=0;
 
-            if (sum == 1) {
-                return true;
-            }
-
-            if (seen.find(sum) != seen.end()) {
-                return false;
-            }
-            
-            seen.insert(sum);
-            n = sum;
+        while(n > 0){
+            int digit=n%10;
+            sum+=digit*digit;
+            n/=10;
         }
+        n=sum;
+       }
+
+       if(n==1){
+        return true;
+       }
+
+return false;
     }
 };
-
