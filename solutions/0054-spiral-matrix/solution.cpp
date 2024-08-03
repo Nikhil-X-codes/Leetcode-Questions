@@ -1,31 +1,43 @@
+#include <vector>
+
 class Solution {
 public:
-vector<int> spiralOrder(vector<vector<int>>& matrix) {
-    if (matrix.empty())
-      return {};
+    std::vector<int> spiralOrder(std::vector<std::vector<int>>& matrix) {
+        int m = matrix.size();
+        int n = matrix[0].size();
 
-    const int m = matrix.size();
-    const int n = matrix[0].size();
-    vector<int> ans;
-    int r1 = 0;
-    int c1 = 0;
-    int r2 = m - 1;
-    int c2 = n - 1;
+        std::vector<int> res;
 
-    // Repeatedly add matrix[r1..r2][c1..c2] to `ans`.
-    while (ans.size() < m * n) {
-      for (int j = c1; j <= c2 && ans.size() < m * n; ++j)
-        ans.push_back(matrix[r1][j]);
-      for (int i = r1 + 1; i <= r2 - 1 && ans.size() < m * n; ++i)
-        ans.push_back(matrix[i][c2]);
-      for (int j = c2; j >= c1 && ans.size() < m * n; --j)
-        ans.push_back(matrix[r2][j]);
-      for (int i = r2 - 1; i >= r1 + 1 && ans.size() < m * n; --i)
-        ans.push_back(matrix[i][c1]);
-      ++r1, ++c1, --r2, --c2;
+        int st_row = 0, last_row = m - 1;
+        int st_col = 0, last_col = n - 1;
+
+        while (st_row <= last_row && st_col <= last_col) {
+            for (int i = st_col; i <= last_col; i++) {
+                res.push_back(matrix[st_row][i]);
+            }
+            st_row++;
+
+            for (int i = st_row; i <= last_row; i++) {
+                res.push_back(matrix[i][last_col]);
+            }
+            last_col--;
+
+            if (st_row <= last_row) {
+                for (int i = last_col; i >= st_col; i--) {
+                    res.push_back(matrix[last_row][i]);
+                }
+                last_row--;
+            }
+
+            if (st_col <= last_col) {
+                for (int i = last_row; i >= st_row; i--) {
+                    res.push_back(matrix[i][st_col]);
+                }
+                st_col++;
+            }
+        }
+
+        return res;
     }
-
-    return ans;
-  }
 };
 
