@@ -3,7 +3,7 @@ public:
     double myPow(double x, int n) {
     
     if(n < 0){
-  n = abs(n);
+     n = abs(n);
      x = 1/x;
     }
     
@@ -16,7 +16,7 @@ public:
         }
 
         else{
-            return x*myPow(x, n-1);
+            return x*myPow(x*x, (n-1)/2);
         }
     }
 };
