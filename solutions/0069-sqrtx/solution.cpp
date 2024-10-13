@@ -1,16 +1,22 @@
 class Solution {
 public:
     int mySqrt(int x) {
-        if (x == 0 || x == 1) return x;  // Handle the base cases
-
-        long long result = 1;
-
-        // Increment result until result^2 exceeds x
-        while (result * result <= x) {
-            result++;
+        if (x == 0 || x == 1) return x;
+        
+        int st = 1, end = x;
+        
+        while (st <= end) {
+            int mid = st + (end - st) / 2;
+            
+            if (mid == x / mid) return mid;
+            
+            if (mid < x / mid)
+                st = mid + 1;
+            else
+                end = mid - 1;
         }
-
-        return result - 1;  // Subtract 1 because result^2 is now greater than x
+        
+        return end;
     }
 };
 
