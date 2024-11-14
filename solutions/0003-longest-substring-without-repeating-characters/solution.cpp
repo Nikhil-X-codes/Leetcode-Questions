@@ -1,24 +1,26 @@
 class Solution {
 public:
-    int lengthOfLongestSubstring(string s) {
+int lengthOfLongestSubstring(string s) {
         
-        unordered_map<char,int>mp;
+ int start = 0, end = 0; // Initialize both pointers
+        unordered_set<char> st; // Set to store unique characters in the current window
+        int maxlen = 0;
 
-        int st=0,end=0;
-        int maxlen=0;
-
-        while(end < s.length()){
-         
-    if(mp.find(s[end]) != mp.end()){
-       st = max(st, mp[s[end]] + 1);
-    }
+        for (end = 0; end < s.length(); end++) {
+            // If character is already in the set, move start pointer to maintain uniqueness
+            while (st.find(s[end]) != st.end()) {
+                st.erase(s[start]);
+                start++;
+            }
             
-mp[s[end]] = end;
-
-maxlen=max(maxlen,end-st+1);
-
-      end++;
+            // Insert the current character into the set
+            st.insert(s[end]);
+            
+            // Calculate max length of substring without repeating characters
+            maxlen = max(maxlen, end - start + 1);
         }
-return maxlen;
+
+        return maxlen;
     }
+
 };
