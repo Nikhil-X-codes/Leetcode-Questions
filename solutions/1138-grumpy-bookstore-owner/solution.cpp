@@ -1,43 +1,33 @@
 class Solution {
 public:
     int maxSatisfied(vector<int>& customers, vector<int>& grumpy, int minutes) {
-        int n = customers.size();
-        int unsatis = 0;
+        int satisfied = 0, extra_customers = 0, current_window = 0;
 
-        // Calculate initial unsatisfied customers during the first `minutes`
-        for (int i = 0; i < minutes; i++) {
-            if (grumpy[i] == 1) {
-                unsatis += customers[i];
+        for (int k = 0; k < customers.size(); k++) {
+            if (grumpy[k] == 0) {
+                satisfied += customers[k];
             }
         }
 
-        int maxUnsatis = unsatis;
-        int i = 0;
-        int j = minutes;
-
-        // Sliding window to find the maximum unsatisfied customers
-        while (j < n) {
-            if (grumpy[j] == 1) {
-                unsatis += customers[j];
-            }
-            if (grumpy[i] == 1) {
-                unsatis -= customers[i];
-            }
-            maxUnsatis = max(maxUnsatis, unsatis);
-            i++;
-            j++;
-        }
-
-        int finalResult = maxUnsatis;
-
-        // Add all initially satisfied customers
-        for (int i = 0; i < n; i++) {
-            if (grumpy[i] == 0) {
-                finalResult += customers[i];
+        for (int k = 0; k < minutes; k++) {
+            if (grumpy[k] == 1) {
+                current_window += customers[k];
             }
         }
 
-        return finalResult;
+        extra_customers = current_window;
+
+        for (int k = minutes; k < customers.size(); k++) {
+            if (grumpy[k] == 1) {
+                current_window += customers[k];
+            }
+            if (grumpy[k - minutes] == 1) {
+                current_window -= customers[k - minutes];
+            }
+            extra_customers = max(extra_customers, current_window);
+        }
+
+        return satisfied + extra_customers;
     }
 };
 
