@@ -1,30 +1,34 @@
 class Solution {
 public:
 
-void solve(vector<int>& nums, vector<vector<int>>& ans, vector<int>& output, int index) {
-    if (index >= nums.size()) {
-        ans.push_back(output);
+   void solve( vector<vector<int>>& output,vector<int>& res,vector<int> nums,int index,int n){
+      
+    if(index >= n){
+        output.push_back(res);
         return;
     }
+    
+// include
+    int element=nums[index];
+    res.push_back(element);
 
-    // Exclude the current element and move forward
-    solve(nums, ans, output, index + 1);
+    solve(output,res,nums,index+1,n);
+  
+  // exclude
+    res.pop_back();
+    solve(output,res,nums,index+1,n);
 
-    // Include the current element and move forward
-    output.push_back(nums[index]);
-    solve(nums, ans, output, index + 1);
-
-    // Backtrack: Remove the last element added
-    output.pop_back();
-}
+   }
 
     vector<vector<int>> subsets(vector<int>& nums) {
+        
+        vector<vector<int>>output;
+        vector<int>res;
+        int index=0;
+        int n=nums.size();
 
-       int index=0;
-       vector<vector<int>>ans;
-       vector<int>output;
-       solve(nums,ans,output,index);
-      
-      return ans;
+        solve(output,res,nums,index,n);
+
+        return output;
     }
 };
