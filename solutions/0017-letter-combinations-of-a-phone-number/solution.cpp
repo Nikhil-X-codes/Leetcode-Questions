@@ -1,47 +1,48 @@
 class Solution {
 public:
-    
-void solve(string digits, vector<string>&res,string s, int index){
+   unordered_map<char,string> keypad = {
+        {'2', "abc"},
+        {'3', "def"},
+        {'4', "ghi"},
+        {'5', "jkl"},
+        {'6', "mno"},
+        {'7', "pqrs"},
+        {'8', "tuv"},
+        {'9', "wxyz"}
+    };
 
-        if(index >= digits.size()){
-            res.push_back(s);
-            return;
-        }
-      
-unordered_map<int,string> mp = {
-    {2, "abc"},
-    {3, "def"},
-    {4, "ghi"},
-    {5, "jkl"},
-    {6, "mno"},
-    {7, "pqrs"},
-    {8, "tuv"},
-    {9, "wxyz"}
-};
-
-int number=digits[index] - '0';
-string value=mp[number];
-
-for(int i=0;i<value.size();i++){
-  s.push_back(value[i]);
-  solve(digits,res,s,index+1);
-  s.pop_back();
-}
-
+   void solve(string digits, vector<string>&res,int index,int n,string &s){
+     
+    if(index >= n){
+        res.push_back(s);
+        return;
     }
-    
-    
-vector<string> letterCombinations(string digits) {
 
+        char ch = digits[index];      
+        string val = keypad[ch]; 
+
+    for(int i=0;i<val.size();i++){
+        // include
+        s.push_back(val[i]);
+        solve(digits,res,index+1,n,s);
+
+        // backtrack and exclude
+        s.pop_back();
+    }
+
+   }
+
+    vector<string> letterCombinations(string digits) {
+        
         vector<string>res;
-         string s="";
-         int index=0;
+        int index=0;
+        int n=digits.size();
+        string s="";
         
-        if(digits.size() == 0){
-            return res;
-        }
-        
-         solve(digits,res,s,index);
-         return res;
+        if(n == 0) return res;
+
+        solve(digits,res,index,n,s);
+       
+        return res;
     }
 };
