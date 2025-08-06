@@ -1,34 +1,32 @@
 class Solution {
 public:
-    
-    void solve(vector<int>& candidates, int target, vector<vector<int>>&output,vector<int>&res,int index,int sum){
-      
-      if(sum == target){
-        output.push_back(res);
-        return;
-      }
-
-      if(sum > target){
-        return;
-      }
-
-        for(int i=index;i<candidates.size();i++){
-            res.push_back(candidates[i]);
-            solve(candidates,target,output,res, i, sum + candidates[i]);
-            res.pop_back();
+    void solve(vector<vector<int>>&output,vector<int>&res,vector<int>candidates,int target,int index){
+        if(target == 0){
+            output.push_back(res);
+            return;
         }
-
+        
+        // Use OR (||) and check bounds FIRST
+        if(index >= candidates.size() || candidates[index] > target) 
+            return;
+        
+        // include
+        res.push_back(candidates[index]);
+        solve(output,res,candidates,target-candidates[index],index);
+        
+        // exclude and backtrack 
+        res.pop_back();
+        solve(output,res,candidates,target,index+1);
     }
     
     vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
+        vector<vector<int>>output;
+        vector<int>res;
+        int index=0;
         
-         vector<vector<int>>output;
-         vector<int>res;
-         int index=0;
-         int sum=0;
-
-         solve(candidates,target,output,res,index,sum);
-
-         return output;
+        sort(candidates.begin(),candidates.end());
+        solve(output,res,candidates,target,index);
+        
+        return output;
     }
 };
