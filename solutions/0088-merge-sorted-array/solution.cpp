@@ -1,40 +1,35 @@
 class Solution {
 public:
-    void merge(vector<int>& nums1, int m,vector<int>& nums2, int n) {
-       vector<int> merged;
-       
-        int i = 0, j = 0;
+    void merge(vector<int>& nums1, int m, vector<int>& nums2, int n) {
         
-        // Use two pointers to traverse both arrays up to their respective limits
-        while (i < m && j < n) {
+        vector<int>ans;
+        int i=0,j=0;
 
-            if (nums1[i] <= nums2[j]) {
-                merged.push_back(nums1[i]);
-                i++;
-            } 
-            
-            else {
-                merged.push_back(nums2[j]);
-                j++;
-            }
-        }
+        while(i < m && j < n){
 
-        // Add remaining elements from nums1, if any
-        while (i < m) {
-            merged.push_back(nums1[i]);
+          if(nums1[i] >= nums2[j]){
+            ans.push_back(nums2[j]);
+            j++;
+          }
+
+          else if(nums1[i] < nums2[j]){
+            ans.push_back(nums1[i]);
             i++;
+          }
         }
 
-        // Add remaining elements from nums2, if any
-        while (j < n) {
-            merged.push_back(nums2[j]);
+        while(i < m){
+        ans.push_back(nums1[i]);
+        i++;
+        }
+
+        while(j < n){
+            ans.push_back(nums2[j]);
             j++;
         }
 
-        // Copy the merged result back into nums1
-        for (int k = 0; k < merged.size(); k++) {
-            nums1[k] = merged[k];
+        for(int k=0;k<m+n;k++){
+            nums1[k] = ans[k];
         }
     }
 };
-
