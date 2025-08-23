@@ -1,45 +1,44 @@
+#include <bits/stdc++.h>
+using namespace std;
+
 class Solution {
 public:
     string minWindow(string s, string t) {
-        
         int m = s.size();
         int n = t.size();
+        if (m < n) return "";
 
-        if (n > m) return "";
+        unordered_map<char, int> target;
+        for (char c : t) target[c]++;
 
-        unordered_map<char, int> mp;
-        for (char c : t) mp[c]++;
+        unordered_map<char, int> window;
+        int l = 0, start = 0, minlen = INT_MAX;
+        int formed = 0;
+        int required = target.size(); 
 
-        int countreq = n; // Total characters required
-        int minwindowsize = INT_MAX;
+        for (int r = 0; r < m; r++) {
+            char c = s[r];
+            window[c]++;
 
-        int start_i = 0; // Start index of the minimum window
-        int i = 0, j = 0;
+            if (target.count(c) && window[c] == target[c])
+                formed++;
 
-        while (j < m) {
-
-            char ch = s[j];
-            if (mp[ch] > 0) countreq--;
-            mp[ch]--;
-
-            // Shrink the window when all characters are matched
-            while (countreq == 0) {
-
-                int currwindowsize = j - i + 1;
-                if (minwindowsize > currwindowsize) {
-                    minwindowsize = currwindowsize;
-                    start_i = i;
+            while (l <= r && formed == required) {
+                if (r - l + 1 < minlen) {
+                    minlen = r - l + 1;
+                    start = l;
                 }
 
-                mp[s[i]]++;
-                if (mp[s[i]] > 0) countreq++;
-                i++;
-            }
+                char leftChar = s[l];
+                window[leftChar]--;
+                if (target.count(leftChar) && window[leftChar] < target[leftChar])
+                    formed--;
 
-            j++;
+                l++;
+            }
         }
 
-        return minwindowsize == INT_MAX ? "" : s.substr(start_i, minwindowsize);
+        return minlen == INT_MAX ? "" : s.substr(start, minlen);
     }
 };
 
