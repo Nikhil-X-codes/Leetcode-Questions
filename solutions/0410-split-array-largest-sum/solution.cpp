@@ -13,8 +13,8 @@ public:
             
              else {
                 students++;
-                if (students > k || nums[i] > mid) return false;
                 pagesum = nums[i];
+                if (students > k ) return false;
             }
         }
         return true;
