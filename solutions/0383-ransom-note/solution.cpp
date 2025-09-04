@@ -1,21 +1,23 @@
-
 class Solution {
 public:
     bool canConstruct(string ransomNote, string magazine) {
-        unordered_map<char, int> charCount;
 
-        for (char c : magazine) {
-            charCount[c]++;
+        unordered_map<char,int>mp;
+
+        for(char c:magazine){
+            mp[c]++;
         }
 
-        for (char c : ransomNote) {
-            if (charCount[c] > 0) {
-                charCount[c]--;
-            } else {
-                return false; 
+        for(char c:ransomNote){
+
+            if(mp[c] > 0){
+                mp[c]--;
+            }
+            else{
+                return false;
             }
         }
-        
-        return true;
+       
+       return true;
     }
 };
