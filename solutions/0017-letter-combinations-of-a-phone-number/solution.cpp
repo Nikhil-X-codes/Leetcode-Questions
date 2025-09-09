@@ -1,6 +1,7 @@
 class Solution {
 public:
-   unordered_map<char,string> keypad = {
+    
+    unordered_map<char,string>mp={
         {'2', "abc"},
         {'3', "def"},
         {'4', "ghi"},
@@ -11,38 +12,35 @@ public:
         {'9', "wxyz"}
     };
 
-   void solve(string digits, vector<string>&res,int index,int n,string &s){
-     
-    if(index >= n){
-        res.push_back(s);
-        return;
+    void solve(vector<string>&res,string &ans,string digits,int index){
+
+        if(index >= digits.size()){
+           res.push_back(ans);
+           return;
+        }
+
+        char val=digits[index];
+        string got=mp[val];
+
+        for(int i=0;i<got.size();i++){
+            
+            ans.push_back(got[i]);
+            solve(res,ans,digits,index+1);
+
+            ans.pop_back();
+        }
+
     }
-
-        char ch = digits[index];      
-        string val = keypad[ch]; 
-
-    for(int i=0;i<val.size();i++){
-        // include
-        s.push_back(val[i]);
-        solve(digits,res,index+1,n,s);
-
-        // backtrack and exclude
-        s.pop_back();
-    }
-
-   }
 
     vector<string> letterCombinations(string digits) {
         
         vector<string>res;
-        int index=0;
-        int n=digits.size();
-        string s="";
-        
-        if(n == 0) return res;
 
-        solve(digits,res,index,n,s);
-       
+        if(digits.empty()) return res;
+
+        string ans="";
+
+        solve(res,ans,digits,0);
         return res;
     }
 };
