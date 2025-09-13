@@ -1,34 +1,41 @@
 class Solution {
 public:
     int maxFreqSum(string s) {
-
-        set<char> vowels = {'a', 'e', 'i', 'o', 'u'};
-    unordered_map<char, int> vowelCounts;
-    unordered_map<char, int> consonantCounts;
-    
-    for (char c : s) {
-        if (vowels.find(c) != vowels.end()) {
-            vowelCounts[c]++;
-        } else {
-            consonantCounts[c]++;
-        }
-    }
-    
-    int maxVowel = 0;
-    for (const auto &pair : vowelCounts) {
-        if (pair.second > maxVowel) {
-            maxVowel = pair.second;
-        }
-    }
-    
-    int maxConsonant = 0;
-    for (const auto &pair : consonantCounts) {
-        if (pair.second > maxConsonant) {
-            maxConsonant = pair.second;
-        }
-    }
-    
-    return maxVowel + maxConsonant;
         
+        unordered_set<char>st={'a','e','i','o','u'};
+        unordered_map<char,int>mp;
+        unordered_map<char,int>mp1;
+    
+        for(char c:s){
+
+           if(st.find(c) != st.end()){
+             mp[c]++;
+           }
+
+           else{
+            mp1[c]++;
+           }
+
+        }
+
+        int maxVowelFreq = 0;
+        if (!mp.empty()) {
+            for (auto const& [key, val] : mp) {
+                if (val > maxVowelFreq) {
+                    maxVowelFreq = val;
+                }
+            }
+        }
+
+        int maxConsonantFreq = 0;
+        if (!mp1.empty()) {
+            for (auto const& [key, val] : mp1) {
+                if (val > maxConsonantFreq) {
+                    maxConsonantFreq = val;
+                }
+            }
+        }
+
+      return maxVowelFreq + maxConsonantFreq;
     }
 };
