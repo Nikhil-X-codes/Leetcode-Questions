@@ -1,29 +1,30 @@
 class Solution {
 public:
     int maxVowels(string s, int k) {
-        
-        int maxCount = 0, currentCount = 0;
-        unordered_set<char> vowels = {'a', 'e', 'i', 'o', 'u'};
+        unordered_set<char> vowels = {'a','e','i','o','u'};
+        int maxcount=0,count=0;
 
-        for (int i = 0; i < k; i++) {
-            if (vowels.count(s[i])) {
-                currentCount++;
+        for(int i=0;i<k;i++){
+            if(vowels.count(s[i])){
+                count++;
             }
         }
-        
-        maxCount = currentCount;
 
-        for (int i = k; i < s.size(); i++) {
-            if (vowels.count(s[i])) {
-                currentCount++;
+        maxcount=count;
+
+        for(int i=k;i<s.size();i++){
+
+            if(vowels.count(s[i-k])){
+                count--;
             }
-            if (vowels.count(s[i - k])) {
-                currentCount--;
+
+            if(vowels.count(s[i])){
+                count++;
             }
-            maxCount = max(maxCount, currentCount);
+
+            maxcount=max(maxcount,count);
         }
 
-        return maxCount;
+        return maxcount;
     }
 };
-
