@@ -11,25 +11,26 @@
  */
 class Solution {
 public:
-
+     
     int height(TreeNode* root){
        
-       if(root == NULL) return -1;
+       if(root == NULL) return 0;
 
        int lefty=height(root->left);
        int righty=height(root->right);
 
-       return  max(lefty,righty) + 1;
+       return max(lefty,righty)+1;
     }
 
     bool isBalanced(TreeNode* root) {
-
-        if(root == NULL) return true;
-
-        int ans= abs(height(root->left) - height(root->right) );
-
-        if(ans > 1) return false;
         
-       return isBalanced(root->left) && isBalanced(root -> right);
+        if (root == NULL) return true;
+
+        int left = height(root->left);
+        int right = height(root->right);
+
+        if(abs(left-right) > 1) return false;
+
+        return isBalanced(root->left) && isBalanced(root->right);
     }
 };
