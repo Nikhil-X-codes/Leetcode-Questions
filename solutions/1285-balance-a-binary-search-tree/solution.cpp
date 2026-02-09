@@ -13,36 +13,36 @@ class Solution {
 public:
 
     void inorder(TreeNode* root,vector<int>&res){
+       
+       if(root == NULL) return;
+       
+       inorder(root->left,res);
 
-         if(root == NULL) return;
+       res.push_back(root->val);
 
-         inorder(root->left,res);
-         res.push_back(root->val);
-         inorder(root->right,res);
+       inorder(root->right,res);
     }
-     
-    TreeNode* build(int l,int r,vector<int>&res){
-         
-        if(l > r) return NULL;
 
-        int n=res.size();
+    TreeNode* build(TreeNode* root,vector<int>&res,int l,int e){
 
-        int mid=l+(r-l)/2;
+        if(l > e) return NULL;
+        
+        int mid = e+(l-e)/2;
 
-        TreeNode* curr=new TreeNode(res[mid]);
+         TreeNode* curr = new TreeNode(res[mid]);
 
-        curr->left=build(l,mid-1,res);
+         curr->left=build(root,res,l,mid-1);
 
-        curr->right=build(mid+1,r,res);
+         curr->right=build(root,res,mid+1,e);
 
-        return curr;
+         return curr;
     }
-    
+
     TreeNode* balanceBST(TreeNode* root) {
         
         vector<int>res;
         inorder(root,res);
 
-        return build(0,res.size()-1,res);
+        return build(root,res,0,res.size()-1);
     }
 };
