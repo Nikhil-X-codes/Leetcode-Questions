@@ -1,28 +1,31 @@
 class Solution {
 public:
+
     int numOfSubarrays(vector<int>& arr) {
-        
+
         const int MOD = 1e9 + 7;
-        int evencount = 1; 
-        int oddcount = 0;
-        int sum = 0;
-        int result = 0;
+        unordered_map<int, int> mp;
+        mp[0] = 1; 
 
-        for (int num : arr) {
-            sum += num;
+        long long prefixsum = 0;
+        long long count = 0;
 
-            if (sum % 2 == 1) { 
-                result += evencount;
-                oddcount++;
-            } else {  
-                result += oddcount;
-                evencount++;
+        for (int i = 0; i < arr.size(); i++) {
+            prefixsum += arr[i];
+            int parity = prefixsum % 2;
+
+            if(parity < 0) parity+=2;
+
+            if (parity == 0) {
+                count += mp[1];
+            } else {
+                count += mp[0];
             }
 
-            result %= MOD;  
+            mp[parity]++;
         }
 
-        return result;
+        return count % MOD;
     }
 };
 
