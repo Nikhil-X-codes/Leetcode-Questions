@@ -2,26 +2,39 @@ class Solution {
 public:
     bool checkInclusion(string s1, string s2) {
         
-    int n = s1.size(), m = s2.size();
-    if(n > m) return false;
+        unordered_map<char,int> target;
+        unordered_map<char,int> window;
 
-    vector<int> freq1(26, 0), freq2(26, 0);
+        for(char c : s1) target[c]++;
 
-    for(char c:s1){
-        freq1[c - 'a']++;
-    }
+        int left = 0, match = 0;
 
-    for(int i=0;i<n;i++){
-        freq2[s2[i] - 'a']++;
-    }
+        for(int right = 0; right < s2.size(); right++){
+        
+            char ch = s2[right];
+            window[ch]++;
 
-    for(int i=n;i<m;i++){
-        if(freq1==freq2) return true;
+            if(target.count(ch) && window[ch] == target[ch]) {
+                match++;
+            }
 
-        freq2[s2[i] - 'a']++;
-        freq2[s2[i-n] - 'a']--;
-    }
+            while(right - left + 1 > s1.size()){
+              
+                char lc = s2[left];
 
-     return freq1 == freq2;
+                if(target.count(lc) && window[lc] == target[lc]) {
+                    match--;
+                }
+
+                window[lc]--;
+                if(window[lc] == 0) window.erase(lc);
+
+                left++;
+            }
+
+            if(match == target.size()) return true;
+        }
+      
+        return false;
     }
 };
