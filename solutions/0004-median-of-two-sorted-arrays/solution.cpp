@@ -1,9 +1,8 @@
 class Solution {
 public:
-        double findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2) {
-        
-        
-        if (nums1.size() > nums2.size()) 
+    double findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2) {
+
+        if (nums1.size() > nums2.size())
 
             return findMedianSortedArrays(nums2, nums1);
 
@@ -32,11 +31,14 @@ public:
                     return max(x1, x2);
             }
 
-            if(x1 > x4) {r=px-1;}
+            if (x1 > x4) {
+                r = px - 1;
+            }
 
-            else  {l=px+1;}
-
-             }
+            else {
+                l = px + 1;
+            }
+        }
 
         return -1;
     }
