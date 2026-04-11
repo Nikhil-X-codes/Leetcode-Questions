@@ -13,12 +13,12 @@ public:
         
         if(root == NULL || root == p || root == q) return root;
 
-        TreeNode* lefty=lowestCommonAncestor(root->left,p,q);
-        TreeNode* righty=lowestCommonAncestor(root->right,p,q);
+TreeNode* lefty = lowestCommonAncestor(root->left,p,q);
+TreeNode* righty = lowestCommonAncestor(root->right,p,q);
 
-         if(lefty && righty) return root; 
+if(lefty && righty) return root;
 
-         return lefty ? lefty : righty;   // ek null hai aur dusra non null hai
+return lefty ? lefty : righty;
 
     }
 };
