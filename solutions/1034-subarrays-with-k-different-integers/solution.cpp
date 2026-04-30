@@ -3,8 +3,9 @@ public:
 
     int solve(vector<int>& nums, int k) {
 
-        if (k < 0)
+        if (k < 1)
             return 0;
+
         int count = 0, l = 0;
         unordered_map<int, int> mp;
 
