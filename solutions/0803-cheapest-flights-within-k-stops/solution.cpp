@@ -1,48 +1,53 @@
 class Solution {
 public:
     int findCheapestPrice(int n, vector<vector<int>>& flights, int src, int dst, int k) {
-        
-        vector<vector<pair<int,int>>> adj(n);
-        vector<int>distance(n,INT_MAX);
+         
+        vector<pair<int,int>> adj[n];
 
-        for(auto &f:flights){
-           int u=f[0];
-           int v=f[1];
-           int w=f[2];
+        for(auto &f : flights) {
 
-           adj[u].push_back({v,w});
+            int u = f[0];
+            int v = f[1];
+            int cost = f[2];
+
+            adj[u].push_back({v, cost});
         }
 
-        queue<pair<int,pair<int,int>>> q;
-        q.push({0,{src,0}});
+        vector<int> dist(n, INT_MAX);
 
-        distance[src] = 0;
+        queue<pair<int, pair<int,int>>> q;
 
-        while(!q.empty()){
-          auto element = q.front();
-          q.pop();
+        q.push({0, {src, 0}});
 
-          int stop = element.first;
-          int node = element.second.first;
-          int cost = element.second.second;
+        dist[src] = 0;
 
-          if(stop > k) continue;
+        while(!q.empty()) {
 
-          for(auto neigh:adj[node]){
-            
-            int next_node=neigh.first;
-            int edge_weight=neigh.second;
+            auto it = q.front();
+            q.pop();
 
-            if(cost + edge_weight < distance[next_node] && stop <= k){
-               distance[next_node] = cost + edge_weight;
-               q.push({stop+1,{next_node, cost + edge_weight}});
+            int stops = it.first;
+            int node = it.second.first;
+            int cost = it.second.second;
+
+            if(stops > k) continue;
+
+            for(auto &nbr : adj[node]) {
+
+                int adjNode = nbr.first;
+                int edgeCost = nbr.second;
+
+                if(cost + edgeCost < dist[adjNode] && stops <= k) {
+
+                    dist[adjNode] = cost + edgeCost;
+
+                    q.push({stops + 1, {adjNode, dist[adjNode]}});
+                }
             }
-
-          }
-          
         }
+       
+        if(dist[dst] == INT_MAX) return -1;
 
-        if(distance[dst] == INT_MAX) return -1;
-        return distance[dst];
+        return dist[dst];
     }
 };
