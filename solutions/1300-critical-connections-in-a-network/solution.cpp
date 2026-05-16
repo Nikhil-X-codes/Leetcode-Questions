@@ -1,29 +1,34 @@
 class Solution {
 public:
-    void dfs(int node, int parent, vector<vector<int>>& adj, vector<int>& tin,
+    void dfs(int parent, int node, vector<vector<int>>& adj, vector<int>& tin,
              vector<int>& low, vector<bool>& visited, int& timer,
              vector<vector<int>>& output) {
 
         visited[node] = true;
+
         tin[node] = low[node] = timer++;
 
-        for (auto neighbor : adj[node]) {
+        for (auto& neigh : adj[node]) {
 
-            if (neighbor == parent)
+            if (neigh == parent) {
                 continue;
+            }
 
-            if (!visited[neighbor]) {
-                dfs(neighbor, node, adj, tin, low, visited, timer, output);
+            else if (!visited[neigh]) {
 
-                low[node] = min(low[node], low[neighbor]);
+                dfs(node, neigh, adj, tin, low, visited, timer, output);
 
-                if (low[neighbor] > tin[node]) {
-                    output.push_back({node, neighbor});
+                low[node] = min(low[node], low[neigh]);
+
+                if (low[neigh] > tin[node]) {
+
+                    output.push_back({node, neigh});
                 }
             }
 
             else {
-                low[node] = min(low[node], tin[neighbor]);
+
+                low[node] = min(low[node], tin[neigh]);
             }
         }
     }
@@ -35,6 +40,7 @@ public:
         vector<vector<int>> output;
 
         for (auto& i : connections) {
+
             int u = i[0];
             int v = i[1];
 
@@ -44,12 +50,16 @@ public:
 
         vector<int> tin(n, -1);
         vector<int> low(n, -1);
+
         vector<bool> visited(n, false);
+
         int timer = 0;
 
         for (int i = 0; i < n; i++) {
+
             if (!visited[i]) {
-                dfs(i, -1, adj, tin, low, visited, timer, output);
+
+                dfs(-1, i, adj, tin, low, visited, timer, output);
             }
         }
 
