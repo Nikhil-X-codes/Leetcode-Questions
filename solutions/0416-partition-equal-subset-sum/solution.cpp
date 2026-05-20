@@ -6,35 +6,30 @@ public:
 
         int totalsum = accumulate(nums.begin(), nums.end(), 0);
 
-        if(totalsum % 2 != 0) return false;
+        if (totalsum % 2 != 0)
+            return false;
 
         int target = totalsum / 2;
 
-        vector<bool> prev(target+1,false);
-        vector<bool> curr(target+1,false);
+        vector<vector<int>> dp(n + 1, vector<int>(target + 1, false));
 
-        prev[0] = true;
+                for (int i = 0; i <= n; i++)
+            dp[i][0] = true;
 
-        for(int i = 1; i <= n; i++){
+        for (int i = 1; i <= n; i++) {
 
-            curr[0] = true;
+            for (int j = 1; j <= target; j++) {
 
-            for(int j = 1; j <= target; j++){
-
-                bool include = false;
-
-                if(nums[i-1] <= j){
-                    include = prev[j - nums[i-1]];
+                if (nums[i - 1] <= j) {
+                    dp[i][j] = dp[i - 1][j - nums[i - 1]] || dp[i - 1][j];
                 }
 
-                bool exclude = prev[j];
-
-                curr[j] = include || exclude;
+                else {
+                    dp[i][j] = dp[i - 1][j];
+                }
             }
-
-            prev = curr;
         }
 
-        return prev[target];
+        return dp[n][target];
     }
 };
