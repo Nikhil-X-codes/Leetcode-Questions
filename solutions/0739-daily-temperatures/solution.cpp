@@ -12,7 +12,9 @@ public:
                 st.pop();
             }
 
-            res[i] = st.empty() ? 0 : st.top() - i;
+            if(!st.empty()){
+                res[i] = st.top() - i;
+            }
 
             st.push(i);
         }
