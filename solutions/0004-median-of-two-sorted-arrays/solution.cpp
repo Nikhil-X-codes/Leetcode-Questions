@@ -2,44 +2,33 @@ class Solution {
 public:
     double findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2) {
 
-        if (nums1.size() > nums2.size())
+        priority_queue<int> maxHeap;
+        priority_queue<int, vector<int>, greater<int>> minHeap;
 
-            return findMedianSortedArrays(nums2, nums1);
+        // helper function just like median in stream
 
-        int m = nums1.size();
-        int n = nums2.size();
+        auto addnum = [&](int num) {
+            maxHeap.push(num);
 
-        int l = 0, r = m;
+            minHeap.push(maxHeap.top());
+            maxHeap.pop();
 
-        while (l <= r) {
-
-            int px = (l + r) / 2;
-            int py = (m + n + 1) / 2 - px;
-
-            int x1 = (px == 0) ? INT_MIN : nums1[px - 1];
-            int x2 = (py == 0) ? INT_MIN : nums2[py - 1];
-
-            int x3 = (px == m) ? INT_MAX : nums1[px];
-            int x4 = (py == n) ? INT_MAX : nums2[py];
-
-            if (x1 <= x4 && x2 <= x3) {
-
-                if ((m + n) % 2 == 0)
-                    return (max(x1, x2) + min(x3, x4)) / 2.0;
-
-                else
-                    return max(x1, x2);
+            if (minHeap.size() > maxHeap.size()) {
+                maxHeap.push(minHeap.top());
+                minHeap.pop();
             }
+        };
 
-            if (x1 > x4) {
-                r = px - 1;
-            }
+        for (int x : nums1)
+            addnum(x);
 
-            else {
-                l = px + 1;
-            }
+        for (int x : nums2)
+            addnum(x);
+
+        if (maxHeap.size() == minHeap.size()) {
+            return ((double)maxHeap.top() + minHeap.top()) / 2.0;
         }
 
-        return -1;
+        return maxHeap.top();
     }
 };
