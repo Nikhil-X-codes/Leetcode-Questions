@@ -1,59 +1,44 @@
-/**
- * Definition for a binary tree node.
- * struct TreeNode {
- *     int val;
- *     TreeNode *left;
- *     TreeNode *right;
- *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
- *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
- *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
- * };
- */
 class Solution {
 public:
+    vector<vector<int>> zigzagLevelOrder(TreeNode* root) {
 
-    void solve(TreeNode* root,vector<vector<int>>&output){
-      
-      if(root == NULL) return;
+        if(root == NULL)
+            return {};
 
-      queue<TreeNode*>q;
+        vector<vector<int>> output;
+        queue<TreeNode*> q;
 
         q.push(root);
-        bool leftToRight=true;
 
-      while(!q.empty()){
-        
-      int n = q.size(); 
-      vector<int>res(n);
+        bool flag = true;
 
-      for(int i=0;i<n;i++){
+        while(!q.empty()) {
 
-                TreeNode* temp = q.front();
+            int size = q.size();
+            vector<int> res;
+
+            for(int i = 0; i < size; i++) {
+
+                TreeNode* node = q.front();
                 q.pop();
-             
-               int index = leftToRight ? i : (n - 1 - i);
-               res[index] = temp->val;
 
-                if(temp->left != nullptr) {
-                    q.push(temp->left);
-                }
+                res.push_back(node->val);
 
-                if(temp->right != nullptr) {
-                    q.push(temp->right);
-                }
-      }
+                if(node->left)
+                    q.push(node->left);
 
-        leftToRight = !leftToRight;
-        output.push_back(res);
-      }
+                if(node->right)
+                    q.push(node->right);
+            }
 
+            if(!flag)
+                reverse(res.begin(), res.end());
 
-    }
+            output.push_back(res);
 
+            flag = !flag;
+        }
 
-    vector<vector<int>> zigzagLevelOrder(TreeNode* root) {
-        vector<vector<int>>output;
-        solve(root,output);
         return output;
     }
 };
