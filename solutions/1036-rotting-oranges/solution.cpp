@@ -1,71 +1,70 @@
 class Solution {
 public:
-
-    bool issafe(int x,int y,int m,int n){
-       return (x >= 0 && x < m && y >= 0 && y < n);
+    bool isvalid(vector<vector<int>>& grid, int x, int y) {
+        return x >= 0 && x < grid.size() && y >= 0 && y < grid[0].size();
     }
 
     int orangesRotting(vector<vector<int>>& grid) {
-         
-         int m=grid.size();
-         int n=grid[0].size();
 
-         queue<pair<int,int>>q;
-         int fresh=0;
+        int m = grid.size();
+        int n = grid[0].size();
 
-         for(int i=0;i<m;i++){
+        queue<pair<int, int>> q;
 
-            for(int j=0;j<n;j++){
+        int fresh = 0;
+        int time = 0;
 
-                if(grid[i][j] == 2){
-                    q.push({i,j});
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+
+                if (grid[i][j] == 2) {
+                    q.push({i, j});
                 }
 
-                else if(grid[i][j] == 1) fresh++;
+                else if (grid[i][j] == 1)
+                    fresh++;
             }
-         }
+        }
 
-         if(fresh == 0) return 0;
-         
-         int count = 0;
+        if (fresh == 0)
+            return 0;
 
         int dx[4] = {1, -1, 0, 0};
         int dy[4] = {0, 0, 1, -1};
 
-        while(!q.empty()){
+        while (!q.empty()) {
 
-        int size = q.size();
-        bool flag = false; 
+            bool flag = false;
+            int size = q.size();
 
-        for(int i=0;i<size;i++){
-           
-           auto [x,y] = q.front();
-           q.pop();
+            for (int i = 0; i < size; i++) {
 
-           for(int d=0;d<4;d++){
-             
-             int nx=x+dx[d];
-             int ny=y+dy[d];
+                auto [x, y] = q.front();
+                q.pop();
 
-             if(issafe(nx,ny,m,n) && grid[nx][ny] == 1){
-                grid[nx][ny] = 2;
-                q.push({nx, ny});
-                fresh--;
-                flag = true;
-             }
+                for (int k = 0; k < 4; k++) {
 
-           }
+                    int nx = x + dx[k];
+                    int ny = y + dy[k];
 
+                    if (isvalid(grid, nx, ny) && grid[nx][ny] == 1) {
+
+                        fresh--;
+                        grid[nx][ny] = 2;
+                        q.push({nx, ny});
+                        flag = true;
+                    }
+                }
+            }
+
+            if (flag) {
+                time++;
+            }
         }
 
-        if(flag){
-            count++;
-        }
+        if (fresh > 0)
+            return -1;
 
-        }
-
-        if(fresh > 0) return -1;
-        
-        return count;
+        return time;
     }
 };
