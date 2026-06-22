@@ -1,86 +1,53 @@
 class Solution {
 public:
-    class DSU {
-    public:
-        vector<int> parent, rank;
+    void solve(vector<vector<int>>& adj, int n, int node, vector<bool>& visited,
+               int& nodecount, int& degreesum) {
 
-        DSU(int n) {
+        visited[node] = true;
 
-            parent.resize(n);
-            rank.resize(n, 0);
+        nodecount++;
+        degreesum += adj[node].size();
 
-            for (int i = 0; i < n; i++) {
-                parent[i] = i;
+        for (int neigh : adj[node]) {
+
+            if (!visited[neigh]) {
+                solve(adj, n, neigh, visited, nodecount, degreesum);
             }
         }
-
-        int find(int i) {
-
-            if (parent[i] == i) {
-                return i;
-            }
-
-            return parent[i] = find(parent[i]);
-        }
-
-        void unite(int x, int y) {
-
-            int s1 = find(x);
-            int s2 = find(y);
-
-            if (s1 != s2) {
-
-                if (rank[s1] > rank[s2]) {
-                    parent[s2] = s1;
-                }
-
-                else if (rank[s1] < rank[s2]) {
-                    parent[s1] = s2;
-                }
-
-                else {
-                    parent[s2] = s1;
-                    rank[s1]++;
-                }
-            }
-        }
-    };
+    }
 
     int countCompleteComponents(int n, vector<vector<int>>& edges) {
 
-        DSU dsu(n);
+        vector<vector<int>> adj(n);
+
+        vector<bool> visited(n, false);
+        int ccount = 0;
 
         for (auto& e : edges) {
-            dsu.unite(e[0], e[1]);
-        }
+            int u = e[0];
+            int v = e[1];
 
-        unordered_map<int, int> nodes;
-        unordered_map<int, int> edgeCount;
+            adj[u].push_back(v);
+            adj[v].push_back(u);
+        }
 
         for (int i = 0; i < n; i++) {
-            int p = dsu.find(i);
-            nodes[p]++;
-        }
 
-        for (auto& e : edges) {
-            int u = dsu.find(e[0]);
-            edgeCount[u]++;
-        }
+            if (!visited[i]) {
 
-        int count = 0;
+                int nodecount = 0;
+                int degreesum = 0;
 
-        for (auto& it : nodes) {
+                solve(adj, n, i, visited, nodecount, degreesum);
 
-            int component = it.first;
-            int nodecnt = it.second;
+                int actualedges = degreesum / 2;
+                int requiredges = (nodecount * (nodecount - 1)) / 2;
 
-            int required = ((nodecnt) * (nodecnt - 1)) / 2;
-
-            if (edgeCount[component] == required) {
-                count++;
+                if (actualedges == requiredges)
+                    ccount++;
             }
         }
 
-        return count;
+        return ccount;
     }
 };
