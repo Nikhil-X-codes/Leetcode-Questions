@@ -1,30 +1,41 @@
 class Solution {
 public:
-    
-    int solve(vector<int>& nums,int n,int start,int end,vector<int>& dp){
+    int solve(int st, int end, vector<int>& nums) {
 
-       dp[start]=nums[start];
+        // if (index > end)
+        //     return 0;
 
-       if(start+1 <= end){
-       dp[start+1]=max(nums[start],nums[start+1]);
-       }
+        // int inc = nums[index] + solve(index + 2, end, nums);
+        // int exc = solve(index + 1, end, nums);
 
-      for (int i = start + 2; i <= end; i++) {
-            dp[i] = max(dp[i - 1], dp[i - 2] + nums[i]);
+        // return max(inc, exc);
+
+        if (st == end)
+            return nums[st];
+
+        vector<int> dp(nums.size(), 0);
+
+        dp[st] = nums[st];
+        dp[st + 1] = max(nums[st], nums[st + 1]);
+
+        for (int i = st + 2; i < nums.size(); i++) {
+            dp[i] = max(nums[i] + dp[i - 2], dp[i - 1]);
         }
 
-       return dp[end];
+        return dp[end];
     }
 
     int rob(vector<int>& nums) {
-        
+
         int n = nums.size();
-        if (n == 1) return nums[0];
-        vector<int>dp(n);
+        if (n == 1)
+            return nums[0];
 
-        int ans1=solve(nums,n,0,n-2,dp);
-        int ans2=solve(nums,n,1,n-1,dp);
+        // int case1 = solve(0, n - 2, nums);
+        // int case2 = solve(1, n - 1, nums);
 
-        return max(ans1,ans2);
+        // return max(case1, case2);
+
+        return max(solve(0, n - 2,nums), solve(1, n - 1,nums));
     }
 };
