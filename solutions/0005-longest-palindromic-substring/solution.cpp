@@ -1,37 +1,33 @@
 class Solution {
 public:
-    vector<vector<int>> memo;
-
-    bool isPalindrome(string& s, int i, int j) {
-        if (i >= j) return true;
-        if (memo[i][j] != -1) return memo[i][j];
-        if (s[i] == s[j]) {
-            memo[i][j] = isPalindrome(s, i + 1, j - 1);
-        } else {
-            memo[i][j] = false;
-        }
-        return memo[i][j];
-    }
-
     string longestPalindrome(string s) {
+
         int n = s.size();
-        if (n <= 1) return s;
-        memo.assign(n, vector<int>(n, -1));
 
-        int maxLen = 1, start = 0;
+        vector<vector<bool>> dp(n, vector<bool>(n, false));
 
-        for (int i = 0; i < n; i++) {
+        int start = 0;
+        int maxlen = 1;
+
+        for (int i = n - 1; i >= 0; i--) {
+
             for (int j = i; j < n; j++) {
-                if (isPalindrome(s, i, j)) {
-                    if (j - i + 1 > maxLen) {
-                        maxLen = j - i + 1;
-                        start = i;
+
+                if (s[i] == s[j]) {
+
+                    if (j - i <= 2 || dp[i + 1][j - 1]) {
+
+                        dp[i][j] = true;
+
+                        if (j - i + 1 > maxlen) {
+                            maxlen = j - i + 1;
+                            start = i;
+                        }
                     }
                 }
             }
         }
 
-        return s.substr(start, maxLen);
+        return s.substr(start, maxlen);
     }
 };
-
