@@ -6,7 +6,12 @@ public:
 
         vector<vector<vector<int>>> dp(
             n + 1,
-            vector<vector<int>>(2, vector<int>(3, 0)));
+            vector<vector<int>>(2, vector<int>(3, 0))
+        );
+
+        // Base cases:
+        // dp[n][buy][cap] = 0
+        // dp[i][buy][0] = 0
 
         for (int i = n - 1; i >= 0; i--) {
 
@@ -14,12 +19,12 @@ public:
 
                 dp[i][1][cap] = max(
                     -prices[i] + dp[i + 1][0][cap],
-                    dp[i + 1][1][cap]
+                    dp[i + 1][1][cap]              
                 );
 
                 dp[i][0][cap] = max(
-                    prices[i] + dp[i + 1][1][cap - 1],
-                    dp[i + 1][0][cap]
+                    prices[i] + dp[i + 1][1][cap - 1], 
+                    dp[i + 1][0][cap]                  
                 );
             }
         }
