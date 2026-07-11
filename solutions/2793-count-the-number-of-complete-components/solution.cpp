@@ -1,17 +1,18 @@
 class Solution {
 public:
-    void solve(vector<vector<int>>& adj, int n, int node, vector<bool>& visited,
-               int& nodecount, int& degreesum) {
+    void dfs(int start, vector<vector<int>> adj, vector<bool>& vis,
+             int& nodecount, int& degreesum) {
 
-        visited[node] = true;
+        vis[start] = true;
 
         nodecount++;
-        degreesum += adj[node].size();
 
-        for (int neigh : adj[node]) {
+        degreesum += adj[start].size();
 
-            if (!visited[neigh]) {
-                solve(adj, n, neigh, visited, nodecount, degreesum);
+        for (int neigh : adj[start]) {
+
+            if (!vis[neigh]) {
+                dfs(neigh, adj, vis, nodecount, degreesum);
             }
         }
     }
@@ -19,9 +20,6 @@ public:
     int countCompleteComponents(int n, vector<vector<int>>& edges) {
 
         vector<vector<int>> adj(n);
-
-        vector<bool> visited(n, false);
-        int ccount = 0;
 
         for (auto& e : edges) {
             int u = e[0];
@@ -31,23 +29,26 @@ public:
             adj[v].push_back(u);
         }
 
+        vector<bool> vis(n, false);
+        int count = 0;
+
         for (int i = 0; i < n; i++) {
 
-            if (!visited[i]) {
+            int nodecount = 0;
+            int degreesum = 0;
 
-                int nodecount = 0;
-                int degreesum = 0;
+            if (!vis[i]) {
 
-                solve(adj, n, i, visited, nodecount, degreesum);
+                dfs(i, adj, vis, nodecount, degreesum);
 
-                int actualedges = degreesum / 2;
-                int requiredges = (nodecount * (nodecount - 1)) / 2;
+                int required = degreesum / 2;
+                int actual = (nodecount * (nodecount - 1)) / 2;
 
-                if (actualedges == requiredges)
-                    ccount++;
+                if (required == actual)
+                    count++;
             }
         }
 
-        return ccount;
+        return count;
     }
 };
