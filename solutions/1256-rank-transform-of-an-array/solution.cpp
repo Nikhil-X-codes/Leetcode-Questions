@@ -1,27 +1,23 @@
 class Solution {
 public:
     vector<int> arrayRankTransform(vector<int>& arr) {
-         
-         int n=arr.size();
 
-         vector<int>res;
+        vector<int> sorted = arr;
+        sort(sorted.begin(), sorted.end());
 
-         if(n==0) return {};
+        unordered_map<int, int> rank;
+        int r = 1;
 
-         set<int> uniqueElements(arr.begin(), arr.end());
+        for (int num : sorted) {
+            if (rank.find(num) == rank.end()) {
+                rank[num] = r++;
+            }
+        }
 
-         int rank=1;
+        for (int i = 0; i < arr.size(); i++) {
+            arr[i] = rank[arr[i]];
+        }
 
-         map<int,int>mp;
-
-         for(int m:uniqueElements){
-            mp[m]=rank++;
-         }
-
-            for (int &m : arr)
-            res.push_back(mp[m]);
-
-
-         return res;
+        return arr;
     }
 };
