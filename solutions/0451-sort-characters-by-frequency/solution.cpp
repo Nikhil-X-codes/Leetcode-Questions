@@ -1,25 +1,35 @@
 class Solution {
 public:
     string frequencySort(string s) {
-        
-            unordered_map<char, int> mp;
 
-        for(char c : s){
+        unordered_map<char, int> mp;
+
+        for (char c : s) {
             mp[c]++;
         }
 
-         multimap<int, char,greater<int>> MM;
+        priority_queue<pair<int, char>> maxheap;
 
-         for(auto &i:mp){
-MM.insert({i.second,i.first});
-         }
-  
-   string res = "";
+        for (auto &element : mp) {
+            char c = element.first;
+            int freq = element.second;
 
-   for(auto &p : MM){
-            res.append(p.first, p.second); 
+            maxheap.push({freq, c});
         }
 
-        return res;
+        string ans = "";
+
+        while (!maxheap.empty()) {
+
+            int freq = maxheap.top().first;
+            char c = maxheap.top().second;
+            maxheap.pop();
+
+            while (freq--) {
+                ans += c;
+            }
+        }
+
+        return ans;
     }
 };
