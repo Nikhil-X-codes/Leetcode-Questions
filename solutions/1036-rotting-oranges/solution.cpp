@@ -1,70 +1,62 @@
 class Solution {
 public:
-    bool isvalid(vector<vector<int>>& grid, int x, int y) {
-        return x >= 0 && x < grid.size() && y >= 0 && y < grid[0].size();
-    }
-
     int orangesRotting(vector<vector<int>>& grid) {
 
+        int fresh = 0;
         int m = grid.size();
         int n = grid[0].size();
 
-        queue<pair<int, int>> q;
-
-        int fresh = 0;
-        int time = 0;
+        queue<pair<int, int>> pq;
 
         for (int i = 0; i < m; i++) {
+
             for (int j = 0; j < n; j++) {
 
                 if (grid[i][j] == 2) {
-                    q.push({i, j});
+                    pq.push({i, j});
                 }
 
-                else if (grid[i][j] == 1)
+                else if (grid[i][j] == 1) {
                     fresh++;
+                }
             }
         }
 
-        if (fresh == 0)
-            return 0;
+        int timer = 0;
 
-        int dx[4] = {1, -1, 0, 0};
-        int dy[4] = {0, 0, 1, -1};
+        int dr[] = {-1, 1, 0, 0};
+        int dc[] = {0, 0, -1, 1};
 
-        while (!q.empty()) {
+        while (!pq.empty() && fresh > 0) {
 
-            bool flag = false;
-            int size = q.size();
+            int size = pq.size();
 
             for (int i = 0; i < size; i++) {
 
-                auto [x, y] = q.front();
-                q.pop();
+                auto [x, y] = pq.front();
+                pq.pop();
 
                 for (int k = 0; k < 4; k++) {
 
-                    int nx = x + dx[k];
-                    int ny = y + dy[k];
+                    int nx = x + dr[k];
+                    int ny = y + dc[k];
 
-                    if (isvalid(grid, nx, ny) && grid[nx][ny] == 1) {
+                    if (nx >= 0 && nx < m && ny >= 0 && ny < n &&
+                        grid[nx][ny] == 1) {
 
                         fresh--;
                         grid[nx][ny] = 2;
-                        q.push({nx, ny});
-                        flag = true;
+                        pq.push({nx, ny});
                     }
                 }
             }
 
-            if (flag) {
-                time++;
-            }
+            timer++;
         }
 
         if (fresh > 0)
             return -1;
 
-        return time;
+        return timer;
     }
 };
