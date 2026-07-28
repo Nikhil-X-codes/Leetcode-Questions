@@ -1,43 +1,55 @@
-
-
 class Solution {
 public:
-    int minDays(std::vector<int>& bloomDay, int m, int k) {
+
+    bool solve(vector<int>& bloomDay, int m, int k, int mid) {
+
+        int flowers = 0;
+        int bouquet = 0;
+
         int n = bloomDay.size();
-        if (n < (long) m * k) {
-            return -1; // Not enough flowers to make m bouquets
-        }
 
-        int left = *std::min_element(bloomDay.begin(), bloomDay.end());
-        int right = *std::max_element(bloomDay.begin(), bloomDay.end());
+        for (int i = 0; i < n; i++) {
 
-        while (left < right) {
-            int mid = left + (right - left) / 2;
-            int bouquets = 0;
-            int flowers = 0;
+            if (bloomDay[i] <= mid) {
+                flowers++;
 
-            for (int i = 0; i < n; ++i) {
-                if (bloomDay[i] <= mid) {
-                    flowers++;
-                    if (flowers == k) {
-                        bouquets++;
-                        flowers = 0;
-                    }
-                } else {
+                if (flowers == k) {
+                    bouquet++;
                     flowers = 0;
                 }
+
             }
 
-            if (bouquets >= m) {
-                right = mid;
-            } else {
-                left = mid + 1;
+            else {
+                flowers = 0;
+            }
+
+        }
+
+        return bouquet >= m;
+    }
+
+    int minDays(vector<int>& bloomDay, int m, int k) {
+
+        int l = *min_element(bloomDay.begin(), bloomDay.end());
+        int r = *max_element(bloomDay.begin(), bloomDay.end());
+
+        int n = bloomDay.size();
+        int ans = -1;
+
+        while (l <= r) {
+            int mid = l + (r - l) / 2;
+
+            if (solve(bloomDay, m, k, mid)) {
+                ans = mid;
+                r = mid - 1;
+            }
+
+            else {
+                l = mid + 1;
             }
         }
 
-        return left;
+        return ans;
     }
 };
-
-
-
