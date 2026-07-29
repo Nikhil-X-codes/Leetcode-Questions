@@ -3,29 +3,27 @@ public:
     int characterReplacement(string s, int k) {
 
         int maxfreq = 0;
-        int st = 0;
-        int end = 0;
+        int left = 0;
         int maxlen = 0;
 
-        unordered_map<char, int> mp;
+        unordered_map<char,int>mp;
 
-        while (end < s.size()) {
-            mp[s[end]]++;
+        for (int i = 0; i < s.size(); i++) {
 
-            maxfreq = max(maxfreq, mp[s[end]]);
+            mp[s[i]]++;
+            maxfreq = max(maxfreq, mp[s[i]]);
 
-            if ((end - st + 1) - maxfreq > k) {
-                mp[s[st]]--;
+        while ((i - left + 1) - maxfreq > k) {
+                mp[s[left]]--;
 
-                if (mp[s[st]] == 0) {
-                    mp.erase(s[st]);
+                if (mp[s[left]] == 0) {
+                    mp.erase(s[left]);
                 }
 
-                st++;
+                left++;
             }
 
-            maxlen = max(maxlen,end-st+1);
-            end++;
+            maxlen = max(maxlen, i - left + 1);
         }
 
         return maxlen;
