@@ -1,39 +1,30 @@
 class Solution {
 public:
-   
-   void solve(int k, int n,vector<vector<int>>&output,vector<int>&res,int sum,int index){
-    
-       if (res.size() == k) {
 
-            if (sum == n) {
+   void solve(int k,int n,vector<vector<int>> &output,vector<int>&res,int num){
+        
+        if(n == 0){
+            if(res.size() == k){
                 output.push_back(res);
+                return;
             }
-            
-            return;
         }
 
-    for(int i=index;i<=9;i++){
+        if(n < 0) return;
 
-        if(sum + i > n){
-            break;
+        for(int i=num;i<=9;i++){
+            res.push_back(i);
+            solve(k,n-i,output,res,i+1);
+            res.pop_back();
         }
-
-        res.push_back(i);
-        solve(k,n,output,res,sum+i,i+1);
-        res.pop_back();
-    }
-
    }
-   
-   
+
     vector<vector<int>> combinationSum3(int k, int n) {
         
-        vector<vector<int>>output;
+        vector<vector<int>> output;
         vector<int>res;
-        int sum=0;
-        int index=1;
 
-        solve(k,n,output,res,sum,index);
+        solve(k,n,output,res,1);
 
         return output;
     }
