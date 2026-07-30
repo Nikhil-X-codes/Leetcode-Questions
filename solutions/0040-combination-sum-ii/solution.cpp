@@ -8,7 +8,7 @@ public:
             return;
          }
 
-         if(index >= candidates.size() || candidates[index] > target) return;
+         if(target < 0) return;
 
          for(int i=index;i<candidates.size();i++){
              
