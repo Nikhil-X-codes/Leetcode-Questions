@@ -1,44 +1,42 @@
 class Solution {
 public:
-    
-    bool isvalid(string &s, int start, int end){
-       
-       if(end > 3) return false;
+    void solve(string& s, string curr, int index, int parts,
+               vector<string>& ans) {
 
-       if(end > 1 && s[start] == '0') return false;
+        if (parts == 4) {
 
-       int val=0;
+            if (index == s.size()) {
+                curr.pop_back();
+                ans.push_back(curr);
+            }
 
-       for(int i=start;i<start+end;i++){
-            val=val*10+(s[i]-'0');
-       }
-
-       return val <= 255;
-    }
-
-    void solve(string &s,int index,int parts,string curr,vector<string> &res){
-       
-       if(parts == 4 && index == s.size()){
-         curr.pop_back();
-res.push_back(curr);
-         return;
-       }
-
-       for(int i=1;i<=3;i++){
-
-        if(index + i > s.size()) break;
-
-        if(isvalid(s,index,i)){
-            string got=s.substr(index,i);
-            solve(s,index+i,parts+1,curr+got+".",res);
+            return;
         }
-         
-       }
+
+        for (int i = 1; i <= 3; i++) {
+
+            if (i + index > s.size())
+                continue;
+
+            string segment = s.substr(index, i);
+
+            if (segment.size() > 1 && segment[0] == '0')
+                continue;
+
+            if (stoi(segment) > 255)
+                continue;
+
+            solve(s, curr + segment + '.', index + i, parts + 1, ans);
+        }
     }
 
     vector<string> restoreIpAddresses(string s) {
-        vector<string> res;
-        solve(s,0,0,"",res);
-        return res;
+
+        vector<string> ans;
+        string curr = "";
+
+        solve(s, curr, 0, 0, ans);
+
+        return ans;
     }
 };
