@@ -1,34 +1,32 @@
 class Solution {
 public:
-    // int solve(string& s, int n, int index) {
+    int solve(string& s, int index) {
 
-    //     if (index == n)
-    //         return 1;
+        if (index >= s.size())
+            return 1;
 
-    //     if (s[0] == '0')
-    //         return 0;
+        int onedigit = solve(s, index + 1);
 
-    //     int onedigit = solve(s, n, index + 1);
+        int twodigit = 0;
 
-    //     int twodigit = 0;
+        if (index + 1 < s.size()) {
 
-    //     if (index + 1 < n) {
+            int num = (s[index] - '0') * 10 + (s[index + 1] - '0');
 
-    //         int num = (s[index] - '0') * 10 + (s[index + 1] - '0');
+            if (num >= 10 && num <= 26) {
+                twodigit = solve(s, index + 2);
+            }
+        }
 
-    //         if (num >= 10 && num <= 26) {
-    //             twodigit = solve(s, n, index + 2);
-    //         }
-    //     }
-
-    //     return onedigit + twodigit;
-    // }
+        return onedigit + twodigit;
+    }
 
     int numDecodings(string s) {
 
-        int n = s.size();
+        if (s[0] == '0')
+            return 0;
 
-        // return solve(s, n, 0);
+        int n = s.size();
 
         vector<int>dp(n+1,0);
 
@@ -53,6 +51,7 @@ public:
                     }
                 }
             }
+            
         }
 
         return dp[0];
