@@ -4,7 +4,7 @@ public:
 
         int n = s.size();
 
-        vector<vector<bool>> dp(n, vector<bool>(n, false));
+        vector<vector<bool>> dp(n + 1, vector<bool>(n + 1, false));
 
         int start = 0;
         int maxlen = 1;
@@ -15,7 +15,7 @@ public:
 
                 if (s[i] == s[j]) {
 
-                    if (j - i <= 2 || dp[i + 1][j - 1]) {
+                    if (j - i + 1 <= 2 || dp[i + 1][j - 1]) {
 
                         dp[i][j] = true;
 
@@ -23,6 +23,7 @@ public:
                             maxlen = j - i + 1;
                             start = i;
                         }
+                        
                     }
                 }
             }
