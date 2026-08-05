@@ -1,63 +1,41 @@
 class Solution {
 public:
-
-    bool isPalindrome(string& s, int l, int r) {
-
-        while (l < r) {
-
-            if (s[l] != s[r])
-                return false;
-
-            l++;
-            r--;
-        }
-
-        return true;
-    }
-
-    // int solve(string s, int index) {
-
-    //     if (s.size() == index)
-    //         return 0;
-
-    //     int mini = INT_MAX;
-
-    //     for (int i = index; i < s.size(); i++) {
-
-    //         if (isPalindrome(s, index, i)) {
-    //             mini = 1 + solve(s, i + 1);
-    //         }
-    //     }
-
-    //     return mini;
-    // }
-
     int minCut(string s) {
 
-        // return solve(s,0) - 1;
+        int n = s.size();
 
-        int n=s.size();
+        vector<vector<bool>> pal(n, vector<bool>(n, false));
 
-        if(n == 1) return 0;
+        for (int i = n - 1; i >= 0; i--) {
 
-        vector<int>dp(n,INT_MAX);
+            for (int j = i; j < n; j++) {
 
-        for(int i=0;i<n;i++){
+                if (s[i] == s[j] && (j - i <= 1 || pal[i + 1][j - 1])) {
 
-            for(int j=0;j<=i;j++){
-                
-                if(isPalindrome(s,j,i)){
-                   
-                   if(j == 0) dp[i] = 0;
-
-                   else {
-                    dp[i] = min(dp[i],1+dp[j-1]);
-                   }
-                   
+                    pal[i][j] = true;
                 }
             }
         }
 
-        return dp[n-1];
+        vector<int> dp(n, INT_MAX);
+
+        for (int i = 0; i < n; i++) {
+
+            if (pal[0][i]) {
+                dp[i] = 0;
+            }
+
+            else {
+
+                for (int j = 0; j < i; j++) {
+
+                    if (pal[j + 1][i]) {
+                        dp[i] = min(dp[i], dp[j] + 1);
+                    }
+                }
+            }
+        }
+
+        return dp[n - 1];
     }
 };
