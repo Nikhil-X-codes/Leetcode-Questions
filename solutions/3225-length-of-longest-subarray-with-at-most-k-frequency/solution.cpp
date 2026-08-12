@@ -2,29 +2,28 @@ class Solution {
 public:
     int maxSubarrayLength(vector<int>& nums, int k) {
         
-        int left=0;
+        int l=0;
+        int maxlen = 0;
+
+        int n=nums.size();
+
         unordered_map<int,int>mp;
-        int maxlen=INT_MIN;
 
-        for(int right=0;right<nums.size();right++){
+        for(int i=0;i<n;i++){
 
-            mp[nums[right]]++;
+            mp[nums[i]]++;
 
-            while(mp[nums[right]] > k){
-               
-               mp[nums[left]]--;
+            while(mp[nums[i]] > k){
+                mp[nums[l]]--;
 
-               if(mp[nums[left]] == 0){
-                mp.erase(nums[left]);
-               }
+                if(mp[nums[l]] == 0){
+                    mp.erase(nums[l]);
+                }
 
-               left++;
+                l++;
             }
 
-            if(mp[nums[right]] <= k){
-                maxlen=max(maxlen,right-left+1);
-            }
-
+            maxlen = max(maxlen,i-l+1);
         }
 
         return maxlen;
