@@ -6,40 +6,35 @@
  *     TreeNode *right;
  *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
  *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
- *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left),
- * right(right) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
  * };
  */
 class Solution {
 public:
-    void solve(TreeNode* root, int targetSum, vector<vector<int>>& output,
-               vector<int>& res) {
 
-        if (root == NULL)
-            return;
+    void solve(TreeNode* root, int targetSum,vector<vector<int>>&res,vector<int>&ans){
+        
+        if(root == NULL) return;
 
-        res.push_back(root->val);
-        targetSum -= root->val;
+        ans.push_back(root->val);
 
-        if (root->left == NULL && root->right == NULL) {
-
-            if (targetSum == 0)
-                output.push_back(res);
+        if(root->left == NULL && root->right == NULL && targetSum == root->val){
+            res.push_back(ans);
         }
+       
+       solve(root->left,targetSum-root->val,res,ans);
+       solve(root->right,targetSum-root->val,res,ans);
 
-        solve(root->left, targetSum, output, res);
-        solve(root->right, targetSum, output, res);
-
-        res.pop_back();
+        ans.pop_back();
     }
 
     vector<vector<int>> pathSum(TreeNode* root, int targetSum) {
+        
+        vector<vector<int>> res;
+        vector<int>ans;
+        
+        solve(root,targetSum,res,ans);
 
-        vector<vector<int>> output;
-        vector<int> res;
-
-        solve(root, targetSum, output, res);
-
-        return output;
+        return res;
     }
 };
