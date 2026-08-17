@@ -4,38 +4,37 @@ public:
 
         int n = grid.size();
 
-        if (grid[0][0] == 1 || grid[n-1][n-1] == 1)
+        if(grid[0][0] == 1 || grid[n-1][n-1] == 1)
             return -1;
 
-        queue<pair<pair<int,int>, int>> q;
+        queue<tuple<int,int,int>> q;
 
-        q.push({{0, 0}, 1});
-        grid[0][0] = 1;  
+        q.push({0, 0, 1});
 
-        int dx[8] = {-1,-1,-1,0,0,1,1,1};
-        int dy[8] = {-1,0,1,-1,1,-1,0,1};
+        grid[0][0] = 1;
 
-        while (!q.empty()) {
+        int dr[8] = {-1,-1,-1,0,0,1,1,1};
+        int dc[8] = {-1,0,1,-1,1,-1,0,1};
 
-            int x = q.front().first.first;
-            int y = q.front().first.second;
-            int dist = q.front().second;
+        while(!q.empty()) {
 
+            auto [x, y, dist] = q.front();
             q.pop();
 
-            if (x == n - 1 && y == n - 1)
+            if(x == n-1 && y == n-1)
                 return dist;
 
-            for (int i = 0; i < 8; i++) {
+            for(int i = 0; i < 8; i++) {
 
-                int nx = x + dx[i];
-                int ny = y + dy[i];
+                int nx = x + dr[i];
+                int ny = y + dc[i];
 
-                if (nx >= 0 && nx < n &&
-                    ny >= 0 && ny < n &&
-                    grid[nx][ny] == 0) {
+                if(nx >= 0 && nx < n &&
+                   ny >= 0 && ny < n &&
+                   grid[nx][ny] == 0) {
 
-                    q.push({{nx, ny}, dist + 1});
+                    q.push({nx, ny, dist + 1});
+
                     grid[nx][ny] = 1;
                 }
             }
