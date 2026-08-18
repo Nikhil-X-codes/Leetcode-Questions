@@ -1,32 +1,33 @@
 class Solution {
 public:
-   
-   void solve(int node,vector<vector<int>>& graph,vector<vector<int>>&output,vector<int>&res){
 
-    res.push_back(node);
+    void solve(vector<vector<int>>& graph,int start,vector<vector<int>>&output,vector<int>&res){
+        int n = graph.size();
 
-    if(node == graph.size()-1){
-       output.push_back(res);
+         res.push_back(start);
+
+         for(int neigh:graph[start]){
+             
+             if(neigh == n-1){
+                res.push_back(neigh);
+                output.push_back(res);
+                res.pop_back();
+             }
+
+             else {
+                solve(graph,neigh,output,res);
+             }
+         }
+
+         res.pop_back();
     }
-    
-    else{
-
-      for(int next:graph[node]){
-       solve(next,graph,output,res);
-      }
-
-    }
-
-    res.pop_back();
-
-   }
-
 
     vector<vector<int>> allPathsSourceTarget(vector<vector<int>>& graph) {
         
-        vector<vector<int>>output;
+        vector<vector<int>> output;
         vector<int>res;
-        solve(0,graph,output,res);
+        
+        solve(graph,0,output,res);
 
         return output;
     }
