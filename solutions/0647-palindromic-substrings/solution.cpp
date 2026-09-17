@@ -12,12 +12,10 @@ public:
 
             for (int j = i; j < n; j++) {
 
-                if (s[i] == s[j]) {
+                if (s[i] == s[j] && (j - i <= 2 || dp[i + 1][j - 1])) {
 
-                    if (j - i <= 2 || dp[i + 1][j - 1]) {
-                        dp[i][j] = true;
-                        count++;
-                    }
+                    dp[i][j] = true;
+                    count++;
                 }
             }
         }
