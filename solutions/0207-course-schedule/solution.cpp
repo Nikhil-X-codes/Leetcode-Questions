@@ -3,22 +3,22 @@ public:
     bool canFinish(int numCourses, vector<vector<int>>& prerequisites) {
 
         int n = numCourses;
-        vector<vector<int>> adj(n);
 
+        vector<vector<int>> adj(n);
         vector<int> indegree(n, 0);
 
         queue<int> q;
 
-        for (auto& pre : prerequisites) {
+        for (auto &p : prerequisites) {
+            int course = p[0];
+            int prerequisite = p[1];
 
-            int u = pre[1];
-            int v = pre[0];
-
-            adj[v].push_back(u);
-
-            indegree[u]++;
+            // prerequisite → course
+            adj[prerequisite].push_back(course);
+            indegree[course]++;
         }
 
+        // Courses with no prerequisites
         for (int i = 0; i < n; i++) {
             if (indegree[i] == 0) {
                 q.push(i);
