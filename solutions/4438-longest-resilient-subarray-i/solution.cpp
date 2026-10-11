@@ -2,6 +2,7 @@
 class Solution {
 public:
     int resilientSubarray(vector<int>& nums, int k) {
+        
         int n = nums.size();
         int ans = 1;
         int len = 1;
