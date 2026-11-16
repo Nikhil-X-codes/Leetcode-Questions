@@ -1,16 +1,14 @@
 # Write your MySQL query statement below
 
-SELECT id, COUNT(*) AS num
+select requester_id as id, count(*) as num
 from (
-     SELECT requester_id AS id
-    FROM RequestAccepted
-    
-    UNION ALL
-    
-    SELECT accepter_id AS id
-    FROM RequestAccepted
-) t
-GROUP BY id
-ORDER BY num DESC
-LIMIT 1;
+  select requester_id from RequestAccepted
+
+  union all
+
+  select accepter_id from RequestAccepted
+)t
+group by id
+order by num desc
+limit 1
 
