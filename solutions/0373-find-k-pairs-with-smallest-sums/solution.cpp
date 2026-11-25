@@ -1,31 +1,38 @@
 class Solution {
 public:
-    vector<vector<int>> kSmallestPairs(vector<int>& nums1, vector<int>& nums2,
-                                       int k) {
+    vector<vector<int>> kSmallestPairs(vector<int>& nums1,
+                                      vector<int>& nums2, int k) {
+        vector<vector<int>> ans;
+        int m = nums1.size();
+        int n = nums2.size();
 
-        vector<vector<int>> res;
+        if (m == 0 || n == 0 || k <= 0)
+            return ans;
 
-        using T = tuple<int, int, int>;
+        priority_queue<tuple<long long, int, int>,
+                       vector<tuple<long long, int, int>>,
+                       greater<tuple<long long, int, int>>> pq;
 
-        priority_queue<T, vector<T>, greater<T>> pq;
-
-        for (int i = 0; i < min((int)nums1.size(), k); i++) {
-            pq.push({nums1[i] + nums2[0], i, 0});
+        // Insert the first pair of each row
+        for (int i = 0; i < min(k, m); i++) {
+            pq.push({0LL + nums1[i] + nums2[0], i, 0});
         }
 
-        while (!pq.empty() && k--) {
+        while (!pq.empty() && k > 0) {
 
             auto [sum, i, j] = pq.top();
             pq.pop();
 
-            res.push_back({nums1[i], nums2[j]});
+            ans.push_back({nums1[i], nums2[j]});
+            k--;
 
-            if (j + 1 < nums2.size()) {
-                pq.push({nums1[i] + nums2[j + 1], i, j + 1});
+            // Push the next pair from the same row
+            if (j + 1 < n) {
+                pq.push({0LL + nums1[i] + nums2[j + 1],
+                         i, j + 1});
             }
-
         }
 
-        return res;
+        return ans;
     }
 };
